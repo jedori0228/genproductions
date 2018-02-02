@@ -91,8 +91,8 @@ if __name__ == "__main__":
         command += "\""
         if debug: print 'command',command
 
-        filelist_used = "root://cluster142.knu.ac.kr//store"+commands.getstatusoutput(command)[1].replace("\n",",").split("/store",1)[1]
-        #filelist_used = "/store"+commands.getstatusoutput(command)[1].replace("\n",",").split("/store",1)[1] 
+        filelist_used = "/store"+commands.getstatusoutput(command)[1].replace("\n",",").split("/store",1)[1]
+        filelist_used = filelist_used.replace('/store','root://cluster142.knu.ac.kr//store')
         if debug: 
             print 'filelist_used',filelist_used.split(',')[0]
             filelist_used = filelist_used.split(',')[0]
