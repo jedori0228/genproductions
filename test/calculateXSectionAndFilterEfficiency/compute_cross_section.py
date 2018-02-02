@@ -68,7 +68,10 @@ if __name__ == "__main__":
     else:
         # search dataset name as name + campaign + datatier
         primary_dataset_name = args.inputdataset.split('/')[1]
-        command="/cvmfs/cms.cern.ch/common/das_client --limit=0 --query=\"dataset dataset=/"+primary_dataset_name+"/*"+args.campaign+"*/"+args.datatier+"\""
+        command="/cvmfs/cms.cern.ch/common/das_client --limit=0 --query=\"dataset dataset=/"+primary_dataset_name+"/*"+args.campaign+"*/"+args.datatier
+        if "USER" in args.datatier:
+          command += " instance=prod/phys03 "
+        command += "\""
         dataset_used = commands.getstatusoutput(command)[1].split("\n")
         if debug: print 'command',command,'\n'
         dataset_used = [x.strip() for x in dataset_used][0]
@@ -82,9 +85,14 @@ if __name__ == "__main__":
         # pick up only the first dataset of the list
         if debug: print 'dataset_used',dataset_used
         # retrieve filelist
-        command="/cvmfs/cms.cern.ch/common/das_client --limit=100 --query=\"file dataset="+dataset_used+"\" "
+        command="/cvmfs/cms.cern.ch/common/das_client --limit=100 --query=\"file dataset="+dataset_used
+        if "USER" in dataset_used:
+          command += " instance=prod/phys03 "
+        command += "\""
         if debug: print 'command',command
-        filelist_used = "/store"+commands.getstatusoutput(command)[1].replace("\n",",").split("/store",1)[1] 
+
+        filelist_used = "root://cluster142.knu.ac.kr//store"+commands.getstatusoutput(command)[1].replace("\n",",").split("/store",1)[1]
+        #filelist_used = "/store"+commands.getstatusoutput(command)[1].replace("\n",",").split("/store",1)[1] 
         if debug: 
             print 'filelist_used',filelist_used.split(',')[0]
             filelist_used = filelist_used.split(',')[0]
