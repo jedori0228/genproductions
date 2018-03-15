@@ -14,7 +14,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100000
 secFiles = cms.untracked.vstring() 
 process.source = cms.Source ("PoolSource",
     fileNames = cms.untracked.vstring(options.inputFiles), 
-    secondaryFileNames = secFiles)
+    secondaryFileNames = secFiles,
+    skipBadFiles = cms.untracked.bool(True),
+)
 process.xsec = cms.EDAnalyzer("GenXSecAnalyzer")
 
 process.ana = cms.Path(process.xsec)
